@@ -269,19 +269,19 @@ const excludeSpam = arr => {
     if (spamChats.includes(el[columnOrder.chatName])) {
       return false;
     }
-    if (spamChatsParts.some(innerEl => el[columnOrder.chatName].toLowerCase().search(typeof innerEl.toLowerCase === "function" ? innerEl.toLowerCase() : innerEl) !== -1)) {
+    if (hasValueFromArray(el, "chatName", spamChatsParts)) {
       return false;
     }
     if (spamMessages.includes(el[columnOrder.text])) {
       return false;
     }
-    if (spamMessagesParts.some(innerEl => el[columnOrder.text].toLowerCase().search(typeof innerEl.toLowerCase === "function" ? innerEl.toLowerCase() : innerEl) !== -1)) {
+    if (hasValueFromArray(el, "text", spamMessagesParts)) {
       return false;
     }
     if (spamPhoneNumbers.includes(el[columnOrder.phoneNumber])) {
       return false;
     }
-    if (spamPhoneNumbersParts.some(innerEl => el[columnOrder.phoneNumber].toLowerCase().search(typeof innerEl.toLowerCase === "function" ? innerEl.toLowerCase() : innerEl) !== -1)) {
+    if (hasValueFromArray(el, "phoneNumber", spamPhoneNumbersParts)) {
       return false;
     }
     return true;
@@ -662,6 +662,18 @@ const getMedian = arr => {
   return (arr[half - 1] + arr[half]) / 2.0;
 };
 
+/**
+ * Checks whether a specified record field contains one of values from a filter array
+ * 
+ * @param {array} record One record from AoA
+ * @param {string} field Which field from message to check by
+ * @param {array} filterArr Flat array of strings or RegExp object to check against
+ * @returns {boolean} Whether field contains at least one value from array
+ */
+const hasValueFromArray = (message, column, filterArr) => {
+  return filterArr.some(el => message[columnOrder[column]].toLowerCase().search(typeof el.toLowerCase === "function" ? el.toLowerCase() : el) !== -1);
+};
+
 // Exporting
 exports.readJSONFile = readJSONFile;
 exports.getInputFilename = getInputFilename;
@@ -680,3 +692,4 @@ exports.filterMostPopMessFromXUniqueAuthors = filterMostPopMessFromXUniqueAuthor
 exports.excludeSpam = excludeSpam;
 exports.getMedian = getMedian;
 exports.filterByMessageType = filterByMessageType;
+exports.hasValueFromArray = hasValueFromArray;

@@ -29,6 +29,7 @@ const {
   excludeSpam,
   getMedian,
   filterByMessageType,
+  hasValueFromArray,
 } = require("./functions");
 
 // Constants
@@ -176,7 +177,8 @@ const main = async () => {
       }
 
       // TODO: think of a way to automatically choose a correct array of values. Currently it has to be done by altering code at the next line
-      const result = parsedCsv.filter(el => dataForExtraction.chatNames.includes(el[columnOrder[field]]));
+      const result = parsedCsv.filter(el => hasValueFromArray(el, field, dataForExtraction.chatNames));
+
       const suffix = `${field}${outputSuffixes["field-and-values"]}`;
       outputData(outputMethod, [result], inputFilenameWithoutExtention, folderName, [suffix], Object.keys(columnOrder), suffix);
       break;
