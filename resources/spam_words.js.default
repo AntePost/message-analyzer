@@ -1,0 +1,36 @@
+"use strict";
+// Arrays of 'parts' accept both strings and regEx literals. Others only strings
+
+const spamChats = [
+  "some chat name",
+];
+
+const spamMessages = [
+  "some message",
+];
+
+const spamChatsParts = [
+  "some chat name part",
+  /some chats? name part/uis,
+];
+
+const spamMessagesParts = [
+  "some message part",
+  /some messages? part/uis,
+];
+
+const spamPhoneNumbers = [
+  "some phone number",
+];
+
+const spamPhoneNumbersParts = [
+  "some phone number part",
+  /some phone numbers? part/uis,
+];
+
+exports.spamChats = spamChats;
+exports.spamMessages = spamMessages;
+exports.spamChatsParts = spamChatsParts;
+exports.spamMessagesParts = spamMessagesParts;
+exports.spamPhoneNumbers = spamPhoneNumbers;
+exports.spamPhoneNumbersParts = spamPhoneNumbersParts;

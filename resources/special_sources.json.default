@@ -1,0 +1,19 @@
+{
+  "standardSources": [
+    "some chat name"
+  ],
+  "standardSourcesParts": [
+    "some chat name part"
+  ],
+  "standardSourcesParstForComparison": [
+    "some message part for comparison"
+  ],
+  "dataForExtraction": {
+    "phoneNumbers": [
+      "some phone number"
+    ],
+    "chatNames": [
+      "some chat name"
+    ]
+  }
+}

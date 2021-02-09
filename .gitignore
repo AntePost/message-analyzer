@@ -1,0 +1,9 @@
+node_modules/
+
+input/
+output/
+
+resources/*.js
+resources/*.json
+
+config.json

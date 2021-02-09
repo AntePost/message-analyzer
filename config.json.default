@@ -1,0 +1,6 @@
+{
+  "inputFileExtention": "csv",
+  "defaultOutputMethod": "xlsx",
+  "defaultFolderNameLength": 9,
+  "defaultNumForMostDuplsOption": 500
+}
