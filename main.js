@@ -41,6 +41,8 @@ const configPath = "./config.json";
  * @returns {undefined}
  */
 const main = async () => {
+  console.log("Starting");
+
   // Load config
   const config = await readJSONFile(configPath);
 
@@ -61,7 +63,9 @@ const main = async () => {
   const folderName = inputFilenameWithoutExtention.slice(0, config.defaultFolderNameLength);
 
   // Parse data to analyze
+  console.log("Parsing input file");
   const parsedCsv = await parseCsv(inputPath);
+  console.log("Input file has been parsed");
 
   // Choosing what to do
   switch (argv.t) {

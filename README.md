@@ -94,4 +94,4 @@ To perform full text search on messages following components may be used:
 - pymystem3 may work slow on Windows (see https://github.com/nlpub/pymystem3/issues/29, workaround available)
 - lemmatize.py can get memoryError if input file is large enough (tested on x86 interpreter). Lemmatized file is saved piecemeal (each chunk is appended) so you can restart from the same place by adjusting CHUNK_SIZE and chunk_counter (e.g. decreasing CHUNK_SIZE twice while setting chunk_counter to the chunk where error occured multiplied by 2)
 - .csv output in main.js can sometimes result in incorrect parsing by Excel
-- .xlsx output is sometimes broken on export and has to be repaired (with no apparent data loss). Also it always has way too big size (by a factor of about 10). Both problems are fixed by resaving it through Excel
+- .xlsx output is sometimes broken on export and has to be repaired (with no apparent data loss). Also it always has bigger size than necessary. Both problems are fixed by resaving it through Excel

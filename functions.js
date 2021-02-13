@@ -171,7 +171,7 @@ const outputXlsxFile = (arrs, inputFilename, path, suffixesArr, schema, workbook
   }
   const outputFilename = `${path}/${inputFilename}_${workbookSuffix}.xlsx`;
   try {
-    XLSX.writeFile(workbook, outputFilename);
+    XLSX.writeFile(workbook, outputFilename, { compression: true });
   } catch (e) {
     console.error(`outputXlsxFile(): Got an error trying to output the file: ${outputFilename}.
 ${e.stack}
