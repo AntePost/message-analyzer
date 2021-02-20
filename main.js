@@ -154,7 +154,7 @@ const main = async () => {
     // Gets x most often repeated duplicates that are 10 of more words and only 1 message per user
     case "x-most-duples": {
       // Gets x
-      const numOfRecordsToOutput = argv.x ? argv.x : config.filterMostPopMessFromXUniqueAuthors;
+      const numOfRecordsToOutput = argv.x ? argv.x : config.defaultNumForMostDuplsOption;
 
       // Prepares regEx
       const minNumOfWords = 10;
