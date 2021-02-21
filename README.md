@@ -68,11 +68,13 @@ Suffixes for output files depend on the operation type
 '-q': which query to use. Used in '-t filter'. If omitted, all queres are performed. A list of queries is provided in './regex_queries.js.default'
 '-x': number of top duplicates. Used in '-t x-most-duples'
 '-f': which field to filter by. Used in '-t field-and-values'
+'--lemm': whether an input file is lemmatized. To set as false: '--lemm=false'. It MUST be the last argument. Please provide correct option to avoid errors, program does not autodetect lemmatization
 
 ## Config parameters
 - inputFileExtention: the extention to search for in an input path ('-i'). Currently only 'scv' is supported
 - defaultOutputMethod: which output method is chosen when '-o' is omitted
 - defaultFolderNameLength: how many symbols at the start of the input file to take to make a subfolder in './output/'
+- defaultLemmatization: whether an input file is lemmatized if '--lemm' is omitted
 - defaultNumForMostDuplsOption: default number of records output after '-t x-most-duples' if '-x' is omitted
 
 ## RegEx query components

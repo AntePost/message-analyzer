@@ -2,7 +2,7 @@
 // Main body of program
 
 // 3rd-party modules
-const argv = require("minimist")(process.argv.slice(2));
+const argv = require("minimist")(process.argv.slice(2), { "boolean": "lemm" });
 
 // Resources
 const { dataSchemas, regExQueries, outputSuffixes } = require("./resources");
@@ -62,6 +62,18 @@ const main = async () => {
   // Prepare folder name for output
   const folderName = inputFilenameWithoutExtention.slice(0, config.defaultFolderNameLength);
 
+  // Check lemmatization setting
+  let isLemmatized = argv.lemm ? argv.lemm : config.defaultLemmatization;
+
+  // If lemmatized, modify column order and output suffixes
+  // TODO: changing column order is a kludge, requires rework
+  if (!isLemmatized) {
+    delete columnOrder.lemmatizedText;
+    columnOrder.duplicateCount--;
+
+    outputSuffixes.filter = outputSuffixes.filter.slice(0, outputSuffixes.filter.length - 2);
+  }
+
   // Parse data to analyze
   console.log("Parsing input file");
   const parsedCsv = await parseCsv(inputPath);
@@ -77,6 +89,11 @@ const main = async () => {
     }
     // Calculates word frequency in parsed data
     case "freq": {
+      if (!isLemmatized) {
+        console.error("This operation requires lemmatized texts. Terminating");
+        process.exit();
+      }
+
       const wordFrequencyArr = filterFrequecyArr(getWordFrequency(parsedCsv), spamWordPartsForFrequency);
       outputData(outputMethod, [wordFrequencyArr], inputFilenameWithoutExtention, folderName, outputSuffixes.freq, dataSchemas.wordFrequencySchema, outputSuffixes.freq);
       break;
@@ -133,13 +150,20 @@ const main = async () => {
         const notSpecialSourcesArrUnique = filterUniqueMessages(notSpecialSourcesArr);
 
         // Get word frequencies for filteredChatsCopy and notSpecialSourcesArr
-        const mainFrequency = filterFrequecyArr(getWordFrequency(filteredChatsCopy), spamWordPartsForFrequency);
-        const notSpecialUniqueFrequency = filterFrequecyArr(getWordFrequency(notSpecialSourcesArr), spamWordPartsForFrequency);
-        console.log("Finished freq");
+        let mainFrequency, notSpecialUniqueFrequency;
+        if (isLemmatized) {
+          mainFrequency = filterFrequecyArr(getWordFrequency(filteredChatsCopy), spamWordPartsForFrequency);
+          notSpecialUniqueFrequency = filterFrequecyArr(getWordFrequency(notSpecialSourcesArr), spamWordPartsForFrequency);
+          console.log("Finished freq");
+        }
 
         const resultingData = [
-          filteredChatsCopy, notSpecialSourcesArrUnique, specialSourcesArr, chatsWithAdjRows, mainFrequency, notSpecialUniqueFrequency,
+          filteredChatsCopy, notSpecialSourcesArrUnique, specialSourcesArr, chatsWithAdjRows,
         ];
+        if (isLemmatized) {
+          resultingData.push(mainFrequency, notSpecialUniqueFrequency);
+        }
+
         outputData(outputMethod, resultingData, inputFilenameWithoutExtention, folderName, outputSuffixes.filter, Object.keys(columnOrder), key);
         console.log(`Query ${key} has been finished`);
       }

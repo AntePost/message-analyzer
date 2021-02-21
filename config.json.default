@@ -2,5 +2,6 @@
   "inputFileExtention": "csv",
   "defaultOutputMethod": "xlsx",
   "defaultFolderNameLength": 9,
+  "defaultLemmatization": false,
   "defaultNumForMostDuplsOption": 500
 }
