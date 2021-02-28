@@ -186,21 +186,28 @@ Terminating program.`);
  * Extracts all URLs from provided AoA
  * 
  * @param {array} parsedCsv Array of records
- * @returns {array} Array wrapper for 4 subarrays with extracted data
+ * @param {bool} united Whether to return 4 separate arrays or 1 joined. Defaults to false
+ * @returns {array} Array wrapper for 4 (or 1) subarrays with extracted data
  */
-const extractUrls = parsedCsv => {
+const extractUrls = (parsedCsv, united=false) => {
   const extractedIntextURLs = extractIntextUrls(filterByMessageType(parsedCsv, "chat"));
-  const urlFrequencyArr = convertToArr(countWordFrequencyAndPower(extractedIntextURLs));
-  const [urlsOfChatsArr, urlsNotOfChatsArr] = extractUrlByType(urlFrequencyArr);
-
   const extractedImageLinks = extractField(filterByMessageType(parsedCsv, "image"), "text");
   const extractedVideoLinks = extractField(filterByMessageType(parsedCsv, "video"), "text");
-  const imageFrequencyArr = convertToArr(countWordFrequencyAndPower(extractedImageLinks));
-  const videoFrequencyArr = convertToArr(countWordFrequencyAndPower(extractedVideoLinks));
 
-  return [
-    urlsOfChatsArr, urlsNotOfChatsArr, imageFrequencyArr, videoFrequencyArr,
-  ];
+  if (!united) {
+    const urlFrequencyArr = convertToArr(countWordFrequencyAndPower(extractedIntextURLs));
+    const [urlsOfChatsArr, urlsNotOfChatsArr] = extractUrlByType(urlFrequencyArr);
+
+    const imageFrequencyArr = convertToArr(countWordFrequencyAndPower(extractedImageLinks));
+    const videoFrequencyArr = convertToArr(countWordFrequencyAndPower(extractedVideoLinks));
+
+    return [
+      urlsOfChatsArr, urlsNotOfChatsArr, imageFrequencyArr, videoFrequencyArr,
+    ];
+  } else {
+    const unitedArr = extractedIntextURLs.concat(extractedImageLinks, extractedVideoLinks);
+    return [ convertToArr(countWordFrequencyAndPower(unitedArr)) ];
+  }
 };
 
 /**

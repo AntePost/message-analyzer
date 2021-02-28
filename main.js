@@ -84,8 +84,11 @@ const main = async () => {
   switch (argv.t) {
     // Parses URLs from texts
     case "url": {
-      const extractedUrls = extractUrls(parsedCsv);
-      outputData(outputMethod, extractedUrls, inputFilenameWithoutExtention, folderName, outputSuffixes.url, dataSchemas.wordFrequencySchema, "url");
+      const isUnited = argv.u;
+      const extractedUrls = extractUrls(parsedCsv, isUnited);
+
+      const workbookSuffix = !argv.u ? "url" : "urlUnited";
+      outputData(outputMethod, extractedUrls, inputFilenameWithoutExtention, folderName, outputSuffixes.url, dataSchemas.wordFrequencySchema, workbookSuffix);
       break;
     }
     // Calculates word frequency in parsed data

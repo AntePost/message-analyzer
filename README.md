@@ -56,7 +56,8 @@ Suffixes for output files depend on the operation type
 - '-i': path to input file (e.g. './input/messages.csv')
 - '-o': output format. Takes value 'csv' and 'xlsx'. Some operations only allow .csv or don't output files
 - '-t' - type of the operation. Can have following values:
-  - 'url': extracts urls from text field in messages (images, videos, inline urls)
+  - 'url': extracts URLs from text field in messages (images, videos, inline URLs)
+    - '-u': outputs URLs in one list without subcategories (images, videos, inline URLs)
   - 'freq': extracts word frequency and word power (number of messages where a given string occurs) data from lemmatized text
   - 'filter': filters messages by regEx queries and outputs result in specific format
     - '-q': which query to use. If omitted, all queres are performed. A list of queries is provided in './regex_queries.js.default'
