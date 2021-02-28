@@ -30,6 +30,7 @@ const {
   getMedian,
   filterByMessageType,
   hasValueFromArray,
+  extractUrlsFromRecord,
 } = require("./functions");
 
 // Constants
@@ -177,8 +178,9 @@ const main = async () => {
     }
     // Gets x most often repeated duplicates that are 10 of more words and only 1 message per user
     case "x-most-duples": {
-      // Gets x
+      // Gets params
       const numOfRecordsToOutput = argv.x ? argv.x : config.defaultNumForMostDuplsOption;
+      const byUrl = argv.u;
 
       // Prepares regEx
       const minNumOfWords = 10;
@@ -186,12 +188,20 @@ const main = async () => {
 
       // Filters only text messages with 10 or more words, counts duplicates
       const onlyChats = filterByMessageType(parsedCsv, "chat");
-      const tenOrMoreWords = onlyChats.filter(el => minNumOfWordsRegex.test(el[columnOrder.text]));
-      const duplicatesCount = countDuplicates(tenOrMoreWords, columnOrder.text);
-      tenOrMoreWords.map(el => el.push(duplicatesCount[el[columnOrder.text]]));
+      let filtered;
+      if (byUrl) {
+        filtered = onlyChats.filter(el => extractUrlsFromRecord(el));
+      } else {
+        filtered = onlyChats.filter(el => minNumOfWordsRegex.test(el[columnOrder.text]));
+      }
+      const duplicatesCount = countDuplicates(filtered, columnOrder.text);
+      filtered.map(el => el.push(duplicatesCount[el[columnOrder.text]]));
 
-      const result = filterMostPopMessFromXUniqueAuthors(tenOrMoreWords, numOfRecordsToOutput);
-      const suffixWithNumber = numOfRecordsToOutput.toString() + outputSuffixes["x-most-duples"];
+      const result = filterMostPopMessFromXUniqueAuthors(filtered, numOfRecordsToOutput);
+      let suffixWithNumber = numOfRecordsToOutput.toString() + outputSuffixes["x-most-duples"];
+      if (byUrl) {
+        suffixWithNumber = suffixWithNumber.concat("ByUrl");
+      }
       outputData(outputMethod, [result], inputFilenameWithoutExtention, folderName, [suffixWithNumber], Object.keys(columnOrder), suffixWithNumber);
       break;
     }

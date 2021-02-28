@@ -67,6 +67,7 @@ Suffixes for output files depend on the operation type
 - 'meta': gathers metadata about the provided file (number of messages, chats, messages per chat on average etc.)
 '-q': which query to use. Used in '-t filter'. If omitted, all queres are performed. A list of queries is provided in './regex_queries.js.default'
 '-x': number of top duplicates. Used in '-t x-most-duples'
+'-u': with the flag filters by URL presence, not by a number of words. Used in '-t x-most-duples'
 '-f': which field to filter by. Used in '-t field-and-values'
 '--lemm': whether an input file is lemmatized. To set as false: '--lemm=false'. It MUST be the last argument. Please provide correct option to avoid errors, program does not autodetect lemmatization
 

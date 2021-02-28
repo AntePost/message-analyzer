@@ -211,16 +211,34 @@ const extractUrls = parsedCsv => {
  */
 const extractIntextUrls = arr => {
   const extractedUrlsArr = arr.reduce((acc, cur) => {
-    // As per https://www.regextester.com/94502
-    const regex = /(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+/iug;
-    let matches = cur[columnOrder.text].match(regex);
+    let matches = extractUrlsFromRecord(cur);
     if (matches) {
-      matches = matches.filter(el => !/^\d+\.+\d*$/.test(el));
       acc = acc.concat(matches);
     }
     return acc;
   }, []);
   return extractedUrlsArr;
+};
+
+/**
+ * Either extracts URLs from a record's text or tests its presence
+ * 
+ * @param {array} record Provided record
+ * @param {bool} test Whether to extract URLs or test for them. Defaults to false
+ * @returns {array|bool} Returs an array of matches if test param is false, otherwise returns a boolean indicating whether there are any URLs
+ */
+const extractUrlsFromRecord = (record, test=false) => {
+  // As per https://www.regextester.com/94502
+  const regex = /(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+/iug;
+  if (!test) {
+    let matches = record[columnOrder.text].match(regex);
+    if (matches) {
+      matches = matches.filter(el => !/^\d+\.+\d*$/.test(el));
+      return matches;
+    }
+  } else {
+    return regex.test(record[columnOrder.text]);
+  }
 };
 
 /**
@@ -693,3 +711,4 @@ exports.excludeSpam = excludeSpam;
 exports.getMedian = getMedian;
 exports.filterByMessageType = filterByMessageType;
 exports.hasValueFromArray = hasValueFromArray;
+exports.extractUrlsFromRecord = extractUrlsFromRecord;
