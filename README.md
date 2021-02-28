@@ -53,23 +53,23 @@ Subfolder name is taken from the input file name
 Suffixes for output files depend on the operation type
 
 ### Arguments
-'-i': path to input file (e.g. './input/messages.csv')
-'-o': output format. Takes value 'csv' and 'xlsx'. Some operations only allow .csv or don't output files
-'-t' - type of the operation. Can have following values:
-- 'url': extracts urls from text field in messages (images, videos, inline urls)
-- 'freq': extracts word frequency and word power (number of messages where a given string occurs) data from lemmatized text
-- 'filter': filters messages by regEx queries and outputs result in specific format
-- 'compare-dupl': Compares presence of certain strings within certain chats and outside (see './special_sources.json.default' for strings and chats used)
-- 'x-most-duples': Gets x most often repeated duplicates that are 10 of more words and keeps only 1 message per user
-- 'field-and-values': filters messages by a given field and an array of strings (must be a complete match, see './special_sources.json.default' for strings used). In the current version requires changing source code to select correct 'dataForExtraction' key in main.js
-- 'exclude-spam': filters messages in a text field by a number of lists of strings (see './spam_words.js.default' for strings used)
-- 'determ-dates': determines the dates of the earliest and the latest messages in an input file
-- 'meta': gathers metadata about the provided file (number of messages, chats, messages per chat on average etc.)
-'-q': which query to use. Used in '-t filter'. If omitted, all queres are performed. A list of queries is provided in './regex_queries.js.default'
-'-x': number of top duplicates. Used in '-t x-most-duples'
-'-u': with the flag filters by URL presence, not by a number of words. Used in '-t x-most-duples'
-'-f': which field to filter by. Used in '-t field-and-values'
-'--lemm': whether an input file is lemmatized. To set as false: '--lemm=false'. It MUST be the last argument. Please provide correct option to avoid errors, program does not autodetect lemmatization
+- '-i': path to input file (e.g. './input/messages.csv')
+- '-o': output format. Takes value 'csv' and 'xlsx'. Some operations only allow .csv or don't output files
+- '-t' - type of the operation. Can have following values:
+  - 'url': extracts urls from text field in messages (images, videos, inline urls)
+  - 'freq': extracts word frequency and word power (number of messages where a given string occurs) data from lemmatized text
+  - 'filter': filters messages by regEx queries and outputs result in specific format
+    - '-q': which query to use. If omitted, all queres are performed. A list of queries is provided in './regex_queries.js.default'
+  - 'compare-dupl': Compares presence of certain strings within certain chats and outside (see './special_sources.json.default' for strings and chats used)
+  - 'x-most-duples': Gets x most often repeated duplicates that are 10 of more words and keeps only 1 message per user
+    - '-x': number of top duplicates
+    - '-u': with the flag filters by URL presence, not by a number of words
+  - 'field-and-values': filters messages by a given field and an array of strings (must be a complete match, see './special_sources.json.default' for strings used). In the current version requires changing source code to select correct 'dataForExtraction' key in main.js
+    - '-f': which field to filter by
+  - 'exclude-spam': filters messages in a text field by a number of lists of strings (see './spam_words.js.default' for strings used)
+  - 'determ-dates': determines the dates of the earliest and the latest messages in an input file
+  - 'meta': gathers metadata about the provided file (number of messages, chats, messages per chat on average etc.)
+- '--lemm': whether an input file is lemmatized. To set as false: '--lemm=false'. It MUST be the last argument. Please provide correct option to avoid errors, program does not autodetect lemmatization
 
 ## Config parameters
 - inputFileExtention: the extention to search for in an input path ('-i'). Currently only 'scv' is supported
