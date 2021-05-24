@@ -35,7 +35,9 @@ Columns should be these in order:
 Outputs result into 'output' folder (relative to the current directory) suffixed with '_lemm'
 
 ### Arguments
-'-i': path to the input file (e.g. './input/messages.csv'). DO NOT add additional arguments
+- '-i': path to the input file (e.g. './input/messages.csv')
+- '--chunk_size': number of rows to process in one batch (optional, defaults to 20000)
+- '--offset': number of rows to skip from the beggining (optional, defaults to 0)
 
 ## main.js
 Script for analyzing WhatsApp chats
@@ -54,7 +56,7 @@ Suffixes for output files depend on the operation type
 
 ### Arguments
 - '-i': path to input file (e.g. './input/messages.csv')
-- '-o': output format. Takes value 'csv' and 'xlsx'. Some operations only allow .csv or don't output files
+- '-o': output format. Takes value 'csv' and 'xlsx'. Some operations only allow .csv or don't output to a file
 - '-t' - type of the operation. Can have following values:
   - 'url': extracts URLs from text field in messages (images, videos, inline URLs)
     - '-u': outputs URLs in one list without subcategories (images, videos, inline URLs)
@@ -96,6 +98,7 @@ To perform full text search on messages following components may be used:
 ## Known bugs
 - pymystem3 may refuse to work on Windows (see https://github.com/nlpub/pymystem3/issues/26)
 - pymystem3 may work slow on Windows (see https://github.com/nlpub/pymystem3/issues/29, workaround available)
-- lemmatize.py can get memoryError if input file is large enough (tested on x86 interpreter). Lemmatized file is saved piecemeal (each chunk is appended) so you can restart from the same place by adjusting CHUNK_SIZE and chunk_counter (e.g. decreasing CHUNK_SIZE twice while setting chunk_counter to the chunk where error occured multiplied by 2)
+- lemmatize.py can get memoryError if input file is large enough (tested on x86 interpreter). Lemmatized file is saved piecemeal (each chunk is appended) so you can restart from the same place by adjusting --chunk-size and passing correct --offset.
 - .csv output in main.js can sometimes result in incorrect parsing by Excel
 - .xlsx output is sometimes broken on export and has to be repaired (with no apparent data loss). Also it always has bigger size than necessary. Both problems are fixed by resaving it through Excel
+- If lemmatize.py doesn't show console messages in real time, start python with -u flag

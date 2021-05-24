@@ -6,6 +6,7 @@ import re
 import math
 from datetime import datetime
 from string import punctuation
+import argparse
 
 # 3rd-party modules
 from nltk.corpus import stopwords
@@ -20,8 +21,13 @@ chunk_counter = 0
 
 
 def main():
-    # Parse input path, extract filename
-    input_path = parse_argv()
+    # Parse input path, extract parameters
+    args = parse_argv()
+    input_path = args.input_path
+    global chunk_size, offset
+    offset = args.offset
+    chunk_size = args.chunk_size
+
     input_filename_without_extention = get_input_filename(input_path)
 
     # Count number of rows in input file
@@ -29,10 +35,12 @@ def main():
     with open(input_path, newline='', encoding='utf-8') as csvfile:
         scv_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         row_count = sum(1 for row in scv_reader)
-    print('Total row count:', row_count)
+    
+    total_chunks = math.ceil((row_count - offset)/ chunk_size)
+    print(f'Total row count: {row_count}. Chunk size: {chunk_size}. Initial offset: {offset}. Chunks to process: {total_chunks}.')
 
     # Loop through input file in chunks, lemmatize a chunk, then save it
-    while CHUNK_SIZE * chunk_counter < row_count:
+    while offset + (chunk_size * chunk_counter) < row_count:
         # Parse a chunk
         parsed_csv = parse_csv(input_path)
 
@@ -40,8 +48,12 @@ def main():
         only_chats = [
             row for row in parsed_csv if row[TYPE_COLUMN_INDEX] == 'chat']
         # Log chunk info
+        starting_row = offset + (chunk_size * (chunk_counter - 1))
+        is_last_chunk = total_chunks == chunk_counter
+        finishing_row = starting_row + chunk_size - 1 if not is_last_chunk else row_count - 1
         print(
-            f'Chunk row count: {len(parsed_csv)}. Only chats row count: {len(only_chats)}. Current chunk counter: {chunk_counter - 1}')
+            f'Chunk: {chunk_counter - 1}/{total_chunks - 1} (rows: {starting_row}-{finishing_row}). \
+Rows of chat type: {len(only_chats)}/{len(parsed_csv)}')
 
         # Join all texts into a single string
         joined_texts = SEPARATOR_FOR_JOIN.join(
@@ -72,8 +84,11 @@ def main():
     with open(f'./output/{input_filename_without_extention}_lemm.csv', newline='', encoding='utf-8') as csvfile:
         scv_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         new_row_count = sum(1 for row in scv_reader)
+        is_difference = row_count - new_row_count
         print(
             f'Original row count: {row_count}. Lemmatized row count: {new_row_count}. Difference: {row_count - new_row_count}')
+        if is_difference:
+            print('WARNING: number of rows changed after lemmatization. Something went wrong.')
 
     # Log success
     print(
@@ -82,17 +97,18 @@ def main():
 
 # Parses passed parameters, requires only -i flag with value, otherwise throws error
 def parse_argv():
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "i:")
-    except getopt.GetoptError:
+    parser = argparse.ArgumentParser(description='Lemmatizes input text records')
+    parser.add_argument('-i', dest='input_path')
+    parser.add_argument('--chunk_size', default=CHUNK_SIZE, type=int)
+    parser.add_argument('--offset', default=0, type=int)
+    
+    args = parser.parse_args()
+
+    if args.input_path == None:
         print('lemmatize.py -i <inputfile>')
         sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-i':
-            return arg
-    print('lemmatize.py -i <inputfile>')
-    sys.exit(2)
-
+    
+    return args
 
 # Locates filename in the provided filepath
 def get_input_filename(input_path):
@@ -104,14 +120,15 @@ def get_input_filename(input_path):
         sys.exit(2)
 
 
-# Parses a chunk of .csv rows. Chunk size is determined by CHUNK_SIZE constant
+# Parses a chunk of .csv rows. Chunk size is determined by --chunk_size parameter or CHUNK_SIZE constant
 def parse_csv(input_path):
     global chunk_counter
     parsed_csv = []
+    starting_row = offset + (chunk_size * chunk_counter)
     with open(input_path, newline='', encoding='utf-8') as csvfile:
         scv_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for i, row in enumerate(scv_reader):
-            if CHUNK_SIZE * chunk_counter <= i < CHUNK_SIZE * (chunk_counter + 1):
+            if starting_row <= i < starting_row + chunk_size:
                 parsed_csv.append(row)
     chunk_counter += 1
     return parsed_csv
