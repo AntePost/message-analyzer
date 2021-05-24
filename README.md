@@ -72,6 +72,8 @@ Suffixes for output files depend on the operation type
   - 'exclude-spam': filters messages in a text field by a number of lists of strings (see './spam_words.js.default' for strings used)
   - 'determ-dates': determines the dates of the earliest and the latest messages in an input file
   - 'meta': gathers metadata about the provided file (number of messages, chats, messages per chat on average etc.)
+  - 'split': splits an input file into chunks of variable size
+    - '--chunk_size': an integer to determine chunk size
 - '--lemm': whether an input file is lemmatized. To set as false: '--lemm=false'. It MUST be the last argument. Please provide correct option to avoid errors, program does not autodetect lemmatization
 
 ## Config parameters

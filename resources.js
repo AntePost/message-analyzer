@@ -67,6 +67,9 @@ const outputSuffixes = {
   "field-and-values": [
     "ByValues",
   ],
+  "split": [
+    "chunk",
+  ],
 };
 
 // Spam words

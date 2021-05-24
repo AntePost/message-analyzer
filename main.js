@@ -281,6 +281,32 @@ const main = async () => {
       console.log("Total number of text messages:", filterByMessageType(parsedCsv, "chat").length);
       break;
     }
+    // Splits input file with chunks of --chunk_size
+    case "split": {
+      let chunk_size = argv.chunk_size;
+
+      if (!chunk_size) {
+        console.error("Provide --chunk_size");
+        process.exit();
+      }
+
+      chunk_size = parseInt(chunk_size);
+
+      if (Number.isNaN(chunk_size)) {
+        console.error("--chunk_size must be an integer");
+        process.exit();
+      }
+
+      const total_chunks = Math.ceil(parsedCsv.length / chunk_size);
+
+      for (let i = 0; i < total_chunks; i++) {
+        const start = chunk_size * i;
+        const finish = i !== total_chunks - 1 ? chunk_size * i + chunk_size : parsedCsv.length;
+        const chunk = parsedCsv.slice(start, finish);
+        outputData("csv", [chunk], inputFilenameWithoutExtention, folderName, [`${outputSuffixes["split"]}_${i}`], dataSchemas.compareDupl, outputSuffixes["split"], true);
+      }
+      break;
+    }
     // Handles unrecognized -t parameters
     default: {
       console.error("Unrecognized value for -t argument. Consult README.md for possible values");
