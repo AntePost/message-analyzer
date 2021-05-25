@@ -50,9 +50,11 @@ def main():
         # Log chunk info
         starting_row = offset + (chunk_size * (chunk_counter - 1))
         is_last_chunk = total_chunks == chunk_counter
-        finishing_row = starting_row + chunk_size - 1 if not is_last_chunk else row_count - 1
+        finishing_row = (starting_row + chunk_size if not is_last_chunk else row_count) - 1
+        current_offset = offset + (chunk_size * (chunk_counter - 1))
         print(
-            f'Chunk: {chunk_counter - 1}/{total_chunks - 1} (rows: {starting_row}-{finishing_row}). \
+            f'Chunk: {chunk_counter}/{total_chunks} (rows: {starting_row}-{finishing_row}). \
+Current offset: {current_offset}. \
 Rows of chat type: {len(only_chats)}/{len(parsed_csv)}')
 
         # Join all texts into a single string
@@ -79,6 +81,8 @@ Rows of chat type: {len(only_chats)}/{len(parsed_csv)}')
             parsed_csv, lemmatized_texts_list)
         # Append lemmatized chunk to output file
         output_csv(parsed_csv_output, input_filename_without_extention)
+
+        print(f'Chunk {chunk_counter} finished successfully')
 
     # Verify equal number of rows in the original and lemmatized
     with open(f'./output/{input_filename_without_extention}_lemm.csv', newline='', encoding='utf-8') as csvfile:
