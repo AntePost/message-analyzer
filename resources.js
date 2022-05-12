@@ -20,6 +20,15 @@ const dataSchemas = {
     "lemmatizedText": 6,
     "duplicateCount": 7,
   },
+  "newWhatsAppSchema": {
+    "phoneNumber": 0,
+    "messageId": 1,
+    "text": 2,
+    "chatName": 3,
+    "datetime": 4,
+    "lemmatizedText": 5,
+    "duplicateCount": 6,
+  },
   "wordFrequencySchema": ["word", "freq", "power"],
   "compareDupl": ["messagePart", "duplNotInSpecial", "duplInSpecial"],
 };

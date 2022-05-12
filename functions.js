@@ -11,7 +11,7 @@ const stringify = require("csv-stringify");
 const XLSX = require("xlsx");
 
 // Resources
-const columnOrder = require("./resources").dataSchemas.whatsAppSchema;
+const columnOrder = require("./resources").dataSchemas.newWhatsAppSchema;
 const { standardSources, standardSourcesParts, standardSourcesParstForComparison } = require("./resources").specialSources;
 const { spamChats, spamMessages, spamChatsParts, spamMessagesParts, spamPhoneNumbers, spamPhoneNumbersParts } = require("./resources").spamWords.excludeSpam;
 
@@ -513,8 +513,8 @@ const countWordFrequencyAndPower = arr => {
  * @returns {array} An AoA with frequency and word power data
  */
 const getWordFrequency = parsedCsv => {
-  const onlyChats = filterByMessageType(parsedCsv, "chat");
-  const allLemmatizedTextsArr = onlyChats.map(el => el = el[columnOrder.lemmatizedText]);
+  // const onlyChats = filterByMessageType(parsedCsv, "chat");
+  const allLemmatizedTextsArr = parsedCsv.map(el => el = el[columnOrder.lemmatizedText]);
   let frequncyObj = countWordFrequencyAndPower(allLemmatizedTextsArr);
   return convertToArr(frequncyObj);
 };

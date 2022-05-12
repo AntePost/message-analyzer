@@ -6,7 +6,7 @@ const argv = require("minimist")(process.argv.slice(2), { "boolean": "lemm" });
 
 // Resources
 const { dataSchemas, regExQueries, outputSuffixes } = require("./resources");
-const columnOrder = dataSchemas.whatsAppSchema;
+const columnOrder = dataSchemas.newWhatsAppSchema;
 const spamWordPartsForFrequency = require("./resources").spamWords.wordFrequency;
 const dataForExtraction = require("./resources").specialSources.dataForExtraction;
 
