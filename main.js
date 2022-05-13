@@ -193,9 +193,9 @@ const main = async () => {
       const onlyChats = filterByMessageType(parsedCsv, "chat");
       let filtered;
       if (byUrl) {
-        filtered = onlyChats.filter(el => extractUrlsFromRecord(el));
+        filtered = parsedCsv.filter(el => extractUrlsFromRecord(el));
       } else {
-        filtered = onlyChats.filter(el => minNumOfWordsRegex.test(el[columnOrder.text]));
+        filtered = parsedCsv.filter(el => minNumOfWordsRegex.test(el[columnOrder.text]));
       }
       const duplicatesCount = countDuplicates(filtered, columnOrder.text);
       filtered.map(el => el.push(duplicatesCount[el[columnOrder.text]]));
