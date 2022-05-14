@@ -597,9 +597,9 @@ const filterMostPopMessFromXUniqueAuthors = (arr, x) => {
 
   const uniqueMessages = [];
   for (const row of arr) {
-    if (uniqueMessages.findIndex(el => el[columnOrder.phoneNumber] === row[columnOrder.phoneNumber]) !== -1) {
-      continue;
-    }
+    // if (uniqueMessages.findIndex(el => el[columnOrder.phoneNumber] === row[columnOrder.phoneNumber]) !== -1) {
+    //   continue;
+    // }
     if (uniqueMessages.length === 0 || row[columnOrder.text] !== uniqueMessages[uniqueMessages.length - 1][columnOrder.text]) {
       uniqueMessages.push(row);
     }
