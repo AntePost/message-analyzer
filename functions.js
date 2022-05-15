@@ -190,7 +190,7 @@ Terminating program.`);
  * @returns {array} Array wrapper for 4 (or 1) subarrays with extracted data
  */
 const extractUrls = (parsedCsv, united=false) => {
-  const extractedIntextURLs = extractIntextUrls(filterByMessageType(parsedCsv, "chat"));
+  const extractedIntextURLs = extractIntextUrls(parsedCsv);
   const extractedImageLinks = extractField(filterByMessageType(parsedCsv, "image"), "text");
   const extractedVideoLinks = extractField(filterByMessageType(parsedCsv, "video"), "text");
 
