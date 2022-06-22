@@ -77,8 +77,17 @@ const main = async () => {
 
   // Parse data to analyze
   console.log("Parsing input file");
-  const parsedCsv = await parseCsv(inputPath);
+  let parsedCsv = await parseCsv(inputPath);
   console.log("Input file has been parsed");
+
+  if (isLemmatized) {
+    parsedCsv = parsedCsv.map(el => {
+      if (el.type !== 'chat' & el.length < Object.keys(columnOrder).length - 1) {
+        el = [...el, ...Array(Object.keys(columnOrder).length - 1 - el.length).fill('')];
+      }
+      return el;
+    });
+  }
 
   // Choosing what to do
   switch (argv.t) {
